@@ -15,7 +15,7 @@ public class Billboard : MonoBehaviour
         if (_cam == null)
         {
             _cam = Camera.main;
-            if (_cam == null) _cam = FindFirstObjectByType<Camera>();
+            if (_cam == null) _cam = FindAnyObjectByType<Camera>();
             if (_cam == null) return;
         }
 

@@ -7,7 +7,7 @@ public class BusAudio : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Bootstrap()
     {
-        if (FindFirstObjectByType<BusAudio>() == null)
+        if (FindAnyObjectByType<BusAudio>() == null)
             new GameObject("BusAudio").AddComponent<BusAudio>();
     }
 

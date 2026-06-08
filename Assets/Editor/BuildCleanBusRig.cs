@@ -19,7 +19,7 @@ using UnityEditor;
 /// Menu: Bame ▸ Build Clean Bus Rig
 public static class BuildCleanBusRig
 {
-    [MenuItem("Bame/Build Clean Bus Rig")]
+    [MenuItem("Bame Plastic/Bus/Build Clean Bus Rig")]
     public static void Build()
     {
         GameObject root = new GameObject("Player");

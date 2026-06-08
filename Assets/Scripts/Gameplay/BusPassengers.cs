@@ -68,7 +68,7 @@ public class BusPassengers : MonoBehaviour
 
         _controller = GetComponent<BusController>();
         if (_controller == null) _controller = GetComponentInParent<BusController>();
-        if (_controller == null) _controller = FindFirstObjectByType<BusController>();
+        if (_controller == null) _controller = FindAnyObjectByType<BusController>();
 
         if (doorAnchor == null)
         {

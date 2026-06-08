@@ -102,7 +102,7 @@ public class InsideConductor : MonoBehaviour
     {
         Passenger best = null;
         float bestSqr = haggleRange * haggleRange;
-        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsSortMode.None))
+        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsInactive.Exclude))
         {
             if (!p.CanHaggle) continue;
             float d = (p.transform.position - transform.position).sqrMagnitude;
@@ -119,7 +119,7 @@ public class InsideConductor : MonoBehaviour
     {
         Passenger best = null;
         float bestSqr = shoveRange * shoveRange;
-        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsSortMode.None))
+        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsInactive.Exclude))
         {
             if (!p.IsStanding) continue;
             float d = (p.transform.position - transform.position).sqrMagnitude;
@@ -132,7 +132,7 @@ public class InsideConductor : MonoBehaviour
     bool NearStanding()
     {
         float r2 = crowdSlowRadius * crowdSlowRadius;
-        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsSortMode.None))
+        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsInactive.Exclude))
         {
             if (!p.IsStanding) continue;
             if ((p.transform.position - transform.position).sqrMagnitude < r2) return true;

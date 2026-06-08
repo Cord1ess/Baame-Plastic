@@ -70,7 +70,7 @@ public class Conductor : MonoBehaviour
     {
         Passenger best = null;
         float bestSqr = grabRange * grabRange;
-        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsSortMode.None))
+        foreach (Passenger p in FindObjectsByType<Passenger>(FindObjectsInactive.Exclude))
         {
             if (p.state != Passenger.State.Waiting && p.state != Passenger.State.Gathering) continue;
             float d = (p.transform.position - transform.position).sqrMagnitude;

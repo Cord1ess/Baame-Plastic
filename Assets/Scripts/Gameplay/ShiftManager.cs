@@ -72,7 +72,7 @@ public class ShiftManager : MonoBehaviour
         if (rivals == null || rivals.Count == 0) GenerateDefaultRivals();
         foreach (var r in rivals) r.ResetEarnings();
 
-        if (dayNight == null) dayNight = FindFirstObjectByType<DayNightController>();
+        if (dayNight == null) dayNight = FindAnyObjectByType<DayNightController>();
         if (dayNight != null)
         {
             dayNight.externalTimeControl = true;
@@ -80,7 +80,7 @@ public class ShiftManager : MonoBehaviour
         }
 
         // One-component setup: spawn the HUD if the scene doesn't already have one.
-        if (FindFirstObjectByType<ShiftHud>() == null)
+        if (FindAnyObjectByType<ShiftHud>() == null)
         {
             GameObject hud = new GameObject("ShiftHUD");
             hud.AddComponent<ShiftHud>();

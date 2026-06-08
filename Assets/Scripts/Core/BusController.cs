@@ -102,6 +102,22 @@ public class BusController : MonoBehaviour
         _wheelRadius = MeasureWheelRadius();
     }
 
+    /// Place the bus (and its detached physics sphere) at a pose and kill momentum. Safe to call after
+    /// Start() — used by the road generator to drop the bus onto the spawn point on the left lane.
+    public void TeleportTo(Vector3 groundPos, Quaternion rotation)
+    {
+        _yaw = rotation.eulerAngles.y;
+        currentSpeed = 0f;
+        transform.SetPositionAndRotation(groundPos, Quaternion.Euler(0f, _yaw, 0f));
+        if (sphere != null)
+        {
+            sphere.transform.position = groundPos + Vector3.up * _sphereRadius;
+            sphere.linearVelocity = Vector3.zero;
+            sphere.angularVelocity = Vector3.zero;
+        }
+    }
+
+
     void Update()
     {
         // Follow the sphere's INTERPOLATED position (smooth — no per-frame jitter).

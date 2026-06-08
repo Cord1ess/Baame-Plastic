@@ -32,8 +32,8 @@ public class RoleController : MonoBehaviour
 
     void Start()
     {
-        if (bus == null) bus = FindFirstObjectByType<BusController>();
-        if (cam == null) cam = FindFirstObjectByType<BusCameraFollow>();
+        if (bus == null) bus = FindAnyObjectByType<BusController>();
+        if (cam == null) cam = FindAnyObjectByType<BusCameraFollow>();
         if (cam != null) _camComponent = cam.GetComponent<Camera>();
         if (bus != null)
             _busRenderers = (bus.busModel != null ? bus.busModel : bus.transform).GetComponentsInChildren<Renderer>();

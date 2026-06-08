@@ -9,7 +9,7 @@ public class SpeedometerHud : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Bootstrap()
     {
-        if (FindFirstObjectByType<SpeedometerHud>() == null)
+        if (FindAnyObjectByType<SpeedometerHud>() == null)
             new GameObject("SpeedometerHud").AddComponent<SpeedometerHud>();
     }
 

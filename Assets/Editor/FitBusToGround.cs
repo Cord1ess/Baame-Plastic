@@ -20,7 +20,7 @@ public static class FitBusToGround
     const float TargetLength = 12.19f;   // bus reference length in metres (1 unit = 1 m)
     const float SnapTolerance = 0.05f;   // keep scale unchanged if within ±5% of target
 
-    [MenuItem("Bame/Fit Bus To Ground")]
+    [MenuItem("Bame Plastic/Bus/Fit Bus To Ground")]
     public static void Fit()
     {
         BusController bus = Object.FindFirstObjectByType<BusController>();

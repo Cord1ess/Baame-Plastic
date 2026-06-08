@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// Global pool of placeholder passengers, pre-built at load so nothing is Instantiated mid-game (keeps
-/// the treadmill smooth). Bus stops borrow waiting passengers via Take(); they're Returned when a stop
-/// gives up un-boarded ones, or when an aboard passenger leaves the bus. LevelLayoutGenerator creates
-/// one at startup; you don't place it by hand.
+/// streaming smooth). Bus stops borrow waiting passengers via Take(); they're Returned when a stop gives
+/// up un-boarded ones, or when an aboard passenger leaves the bus. SplineStopSpawner auto-creates one if
+/// none exists; you don't place it by hand.
 public class PassengerPool : MonoBehaviour
 {
     public static PassengerPool Instance { get; private set; }

@@ -12,10 +12,10 @@ using UnityEditor;
 /// Menu: Bame ▸ Wheels ▸ …
 public static class RigWheels
 {
-    [MenuItem("Bame/Wheels/Assign Selection as Front Wheels")]
+    [MenuItem("Bame Plastic/Bus/Wheels/Assign Selection as Front Wheels")]
     static void Front() => Assign(true);
 
-    [MenuItem("Bame/Wheels/Assign Selection as Back Wheels")]
+    [MenuItem("Bame Plastic/Bus/Wheels/Assign Selection as Back Wheels")]
     static void Back() => Assign(false);
 
     static void Assign(bool front)

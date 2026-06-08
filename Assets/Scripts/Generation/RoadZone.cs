@@ -20,13 +20,16 @@ public class RoadZone : MonoBehaviour
     public float medianWidth = 1.5f;
     [Tooltip("Footpath / sidewalk width each side (pedestrians, stalls, stops).")]
     public float footpathWidth = 2.5f;
+    [Tooltip("Flat ground shoulder beyond each footpath — buildings/stalls sit on this so they aren't floating.")]
+    public float groundWidth = 10f;
     [Tooltip("Left-hand traffic (Bangladesh): your forward lanes are on the LEFT (-X). Untick for right-hand.")]
     public bool leftHandTraffic = true;
 
     public float MedianHalf => medianWidth * 0.5f;
     public float DriveHalf => MedianHalf + lanesPerDirection * laneWidth;   // outer edge of the lanes
     public float RoadHalf => DriveHalf + footpathWidth;                     // outer edge incl. footpath
-    public float TotalWidth => RoadHalf * 2f;
+    public float GroundHalf => RoadHalf + groundWidth;                      // outer edge incl. ground shoulder
+    public float TotalWidth => GroundHalf * 2f;
 
     /// Local X of a lane centre. forward = your direction; laneIndex 0 = innermost (beside the median).
     public float LaneCenterX(int laneIndex, bool forward)
@@ -62,36 +65,48 @@ public class RoadZone : MonoBehaviour
 
     public Vector3 RandomFootpathWorld(bool leftSide) => transform.TransformPoint(RandomFootpathLocal(leftSide));
 
-    // ---- Gizmo blueprint: select the chunk to see lanes (grey), median (yellow), footpaths (green),
-    // and lane centre lines (white dashed). Build + texture your geometry to match these. ----
+    /// A random local point on the ground shoulder (leftSide = the -X side). For spawning buildings/props.
+    public Vector3 RandomGroundLocal(bool leftSide)
+    {
+        float sign = leftSide ? -1f : 1f;
+        float x = sign * Random.Range(RoadHalf, GroundHalf);
+        return new Vector3(x, 0f, Random.Range(-roadLength * 0.5f, roadLength * 0.5f));
+    }
+
+#if UNITY_EDITOR
+    // Editing widths live-rebuilds the tiled road preview so what you see matches the runtime cross-section.
+    void OnValidate()
+    {
+        TiledRoadStreamer road = GetComponent<TiledRoadStreamer>();
+        if (road == null) return;
+        UnityEditor.EditorApplication.delayCall += () =>
+        {
+            if (this != null && road != null && !Application.isPlaying) road.RebuildEditorPreview();
+        };
+    }
+#endif
+
+    // ---- Cross-section RULER (thin slice): ground (green), footpath (grey), lanes (dark), median
+    // (yellow). It's a profile guide, NOT the road — the lofted mesh is the real road. ----
     void OnDrawGizmosSelected()
     {
         Gizmos.matrix = transform.localToWorldMatrix;
-        float hl = roadLength * 0.5f;
+        const float hl = 1f;   // thin slice so it reads as a profile, not a competing straight road
 
-        // Footpaths (green)
-        Gizmos.color = new Color(0.3f, 0.9f, 0.4f, 0.35f);
+        Gizmos.color = new Color(0.4f, 0.7f, 0.35f, 0.5f);   // ground shoulders
+        DrawBand(-GroundHalf, -RoadHalf, hl);
+        DrawBand(RoadHalf, GroundHalf, hl);
+
+        Gizmos.color = new Color(0.7f, 0.7f, 0.7f, 0.6f);    // footpaths
         DrawBand(-RoadHalf, -DriveHalf, hl);
         DrawBand(DriveHalf, RoadHalf, hl);
 
-        // Lanes (grey) — both sides
-        Gizmos.color = new Color(0.55f, 0.55f, 0.6f, 0.35f);
+        Gizmos.color = new Color(0.45f, 0.45f, 0.5f, 0.6f);  // lanes
         DrawBand(-DriveHalf, -MedianHalf, hl);
         DrawBand(MedianHalf, DriveHalf, hl);
 
-        // Median / divider (yellow)
-        Gizmos.color = new Color(1f, 0.85f, 0.2f, 0.5f);
+        Gizmos.color = new Color(1f, 0.85f, 0.2f, 0.6f);     // median
         DrawBand(-MedianHalf, MedianHalf, hl);
-
-        // Lane centre lines (white)
-        Gizmos.color = Color.white;
-        for (int i = 0; i < lanesPerDirection; i++)
-        {
-            float xF = LaneCenterX(i, true);
-            float xO = LaneCenterX(i, false);
-            Gizmos.DrawLine(new Vector3(xF, 0.02f, -hl), new Vector3(xF, 0.02f, hl));
-            Gizmos.DrawLine(new Vector3(xO, 0.02f, -hl), new Vector3(xO, 0.02f, hl));
-        }
 
         Gizmos.matrix = Matrix4x4.identity;
     }
@@ -100,6 +115,6 @@ public class RoadZone : MonoBehaviour
     {
         float cx = (x0 + x1) * 0.5f;
         float w = Mathf.Abs(x1 - x0);
-        Gizmos.DrawCube(new Vector3(cx, 0f, 0f), new Vector3(w, 0.04f, halfLen * 2f));
+        Gizmos.DrawCube(new Vector3(cx, 0.06f, 0f), new Vector3(w, 0.1f, halfLen * 2f));
     }
 }

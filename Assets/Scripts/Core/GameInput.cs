@@ -19,7 +19,7 @@ public class GameInput : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindFirstObjectByType<GameInput>();
+                _instance = FindAnyObjectByType<GameInput>();
                 if (_instance == null) _instance = new GameObject("GameInput").AddComponent<GameInput>();
             }
             return _instance;

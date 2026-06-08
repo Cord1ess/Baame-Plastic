@@ -4,7 +4,7 @@ using UnityEngine;
 /// Bus-relative traffic to dodge. Builds a small POOL of placeholder vehicles (code-generated coloured
 /// boxes with trigger colliders + Obstacle) at load — no prefabs — and keeps them ahead of the bus,
 /// recycling each one ahead again once the bus has driven past it (no mid-game Instantiate). Hitting
-/// one sheds speed + damages bus health. Auto-finds the bus; LevelLayoutGenerator auto-creates one.
+/// one sheds speed + damages bus health. Auto-finds the bus. (Phase C: wire to TiledRoadStreamer lanes.)
 ///
 /// NOTE: these ride neither a chunk nor the bus (they're a self-managed pool), which is fine while
 /// FloatingOrigin is off. When it's re-enabled, this pool must shift with the world (subscribe to the
@@ -50,7 +50,7 @@ public class TrafficSpawner : MonoBehaviour
 
     Transform FindBus()
     {
-        BusController bc = FindFirstObjectByType<BusController>();
+        BusController bc = FindAnyObjectByType<BusController>();
         return bc != null ? bc.transform : null;
     }
 
